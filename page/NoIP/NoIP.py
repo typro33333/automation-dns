@@ -1,8 +1,8 @@
 import time
-from model.selenium import Selenium
-from model.user import User
-from model.ip import Ip
-from model.field import Field_NoIp
+from models.selenium.selenium import Selenium
+from models.users.users import User
+from models.ip import Ip
+from models.field import Field_NoIp
 
 class NoIP(Selenium, Field_NoIp):
   """

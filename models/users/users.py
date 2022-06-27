@@ -1,15 +1,9 @@
-from helper.helps import loadVaribleEnv, getPwd
-from dotenv import load_dotenv
-
-load_dotenv(getPwd('user.env'))
-
-USERNAME = loadVaribleEnv('USERNAME')
-PASSWORD = loadVaribleEnv('PASSWORD')
+from contants import USERNAME_NOIP, PASSWORD_NOIP
 
 # Class User
 class User():
-  username = USERNAME
-  password = PASSWORD
+  username = USERNAME_NOIP
+  password = PASSWORD_NOIP
 
   def get_username(self):
     return self.username

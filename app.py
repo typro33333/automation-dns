@@ -1,14 +1,15 @@
-from page.NoIP.NoIP import NoIP
-from model.NoIP.hostname import Hostname
-from model.ip import Ip
+"""
+  This file will define workflow function.
+"""
+# from page.NoIP.NoIP import NoIP
+# from models.hostname import Hostname
+# from models.ip import Ip
 
 # Current IPv4
-current_ip = Ip.get_ip_public()
+# current_ip = Ip.get_ip_public()
 
 # New Host Name
-host = Hostname('tmt22', current_ip)
-
-print('Watch readme to run')
+# host = Hostname('tmt22', current_ip)
 
 # noIp = NoIP()
 # noIp.login()
