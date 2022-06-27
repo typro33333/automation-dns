@@ -23,16 +23,30 @@ class Field_NoIp():
   ### Dashboard dynamic dns
   xpath_list_row_table = "//table[@class='table no-margin-bv table-stack']/tbody/tr"
 
+  def hostname(self, number):
+    xpath_name_hostname = f"((//table[@class='table no-margin-bv table-stack']/tbody/tr)[{number}]/td)[1]/div/a"
+    return xpath_name_hostname
+
+  def get_time_created(self, number):
+    xpath_time_created = f"(((//table[@class='table no-margin-bv table-stack']/tbody/tr)[{number}]/td)[2]/span)[2]/span"
+    return xpath_time_created
+
   ### Field create new host
   # Button open form input new host
   xpath_button_new_host = "//button[@type='button' and contains(.,'Create Hostname')]"
+
+  # Button delete host name
+  def button_delete_host(self, number):
+    xpath_button_delete_host = "(//div[@data-cy='remove-hostname'])[{}]".format(number)
+    return xpath_button_delete_host
+
+  xpath_button_comfirm_delete = "//button[normalize-space()='Delete']"
 
   # Form field new host
   xpath_form_new_host = "(//div[@class='stat-cell link-cursor'])[1]"
   xpath_input_hostname = "//input[@type='text' and @name='name']"
   xpath_input_ipv4 = "//input[@name='target' and @data-cy='ipv4-address']"
   xpath_button_create = "//button[contains(.,'Create Hostname') and contains(@class, 'ml-sm-30')]"
-
 
 class Field_MatBao():
   pass

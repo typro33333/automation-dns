@@ -19,6 +19,9 @@ class NoIP(Selenium, Field_NoIp):
   username = user.get_username()
   password = user.get_passwrod()
 
+  def refresh_page(self, url):
+    self.get_url(url)
+
   def login(self):
     try:
       self.user.login_noip()
@@ -27,33 +30,62 @@ class NoIP(Selenium, Field_NoIp):
       self.input(self.xpath_password, self.password)
       self.button_click(self.xpath_button_login)
       self.wait_loading_page(self.xpath_access_list_host).click()
-    except NameError:
-      print(NameError)
+    except:
+      print('Time out connect NoIP')
 
-  def check_exits_host(self):
+  def total_host(self):
     try:
-      # Wait table load data
+      # Wait load table
       self.wait_loading_page(self.xpath_list_row_table)
+      return len(self.get_list_element(self.xpath_list_row_table))
+    except:
+      print("Can't catch list host name")
 
-      # Get total host on table
-      total_host = len(self.get_list_element(self.xpath_list_row_table))-1
-      print(f'Tổng cộng có: {total_host}')
-    except NameError:
-      print(NameError)
+  def list_host_name(self):
+    list_host_name = []
+    try:
+      for i in range(1, self.total_host()):
+        text = self.get_text(self.hostname(i))
+        list_host_name.append(text)
+      return list_host_name
+    except:
+      print("Can't catch list host name")
+
+  def check_exits_host(self, hostname):
+    # This version just support domain ddns.net
+    hostname = f"{hostname}.ddns.net"
+    return hostname in self.list_host_name()
 
   def create_new_hostname(self, hostname, ipv4):
-    try:
+      if self.check_exits_host(hostname):
+        print("Can't create host name, {} is existed".format(hostname))
+        return False
+      # Wait button create
       self.wait_loading_page(self.xpath_button_new_host).click()
+
+      # Wait form create show
       time.sleep(self.time_sleep)
       self.input(self.xpath_input_hostname, hostname)
       self.input(self.xpath_input_ipv4, ipv4)
       self.button_click(self.xpath_button_create)
       time.sleep(self.time_sleep)
-    except NameError:
-      print(NameError)
+      return True
 
   def delete_hostname(self, hostname):
-    try:
-      self.get_url(self.url_dynamic)
-    except NameError:
-      print(NameError)
+    # Check exist hostname
+    if self.check_exits_host(hostname):
+      hostname = f"{hostname}.ddns.net"
+      index = self.list_host_name().index(hostname)+1
+      self.element_click(self.button_delete_host(index))
+      time.sleep(self.time_sleep)
+      self.button_click(self.xpath_button_comfirm_delete)
+      print("Delete hostname: {} complete!".format(hostname))
+      return True
+    print ("{}.ddns.net not existed can't delete please check again".format(hostname))
+    return False
+
+  def update_domain(self, hostname):
+    hostname = f"{hostname}.ddns.net"
+    index = self.list_host_name().index(hostname)+1
+    time = self.get_text(self.get_time_created(index))
+    print(time)

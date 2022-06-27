@@ -37,6 +37,9 @@ class Selenium():
   def get_url(self, url):
     self.driver.get(url)
 
+  def get_text(self, name_element):
+    return self.driver.find_element_by_xpath(name_element).text
+
   def get_element(self, name_element):
     return self.driver.find_element(By.XPATH, name_element)
 
