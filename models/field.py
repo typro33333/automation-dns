@@ -27,9 +27,13 @@ class Field_NoIp():
     xpath_name_hostname = f"((//table[@class='table no-margin-bv table-stack']/tbody/tr)[{number}]/td)[1]/div/a"
     return xpath_name_hostname
 
-  def get_time_created(self, number):
-    xpath_time_created = f"(((//table[@class='table no-margin-bv table-stack']/tbody/tr)[{number}]/td)[2]/span)[2]/span"
-    return xpath_time_created
+  def date_hostname(self, number):
+    xpath_date_hostname = f"(((//table[@class='table no-margin-bv table-stack']/tbody/tr)[{number}]/td)[2]/span)[2]"
+    return xpath_date_hostname
+
+  def ip_targert_hostname(self, number):
+    xpath_ip_target_hostname = f"(((//table[@class='table no-margin-bv table-stack']/tbody/tr)[{number}]/td)[3]/span)[2]"
+    return xpath_ip_target_hostname
 
   ### Field create new host
   # Button open form input new host

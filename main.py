@@ -5,7 +5,7 @@ from fastapi import FastAPI
 from runbot.run import start_bot_telegram
 
 # Routes
-from routes import users, items
+# from routes import users, items
 
 
 if __name__ == '__main__':

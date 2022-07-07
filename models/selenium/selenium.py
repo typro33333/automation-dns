@@ -24,7 +24,7 @@ class Selenium():
   options = Options()
   options.add_argument("--disable-extensions")
   options.add_argument("start-maximized")
-  options.add_experimental_option("detach", True)
+  options.add_experimental_option("detach", False)
 
   # Load driver selenium
   driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)

@@ -1,4 +1,5 @@
 import time
+import datetime
 from models.selenium.selenium import Selenium
 from models.users.users import User
 from models.ip import Ip
@@ -9,7 +10,10 @@ class NoIP(Selenium, Field_NoIp):
     This is NoIP provide dns for ip public. Using selenium auto catch field
     in noip and auto dns term by date (3 day, 7day, 28day) can't longer because
     1 dns have 30 days expired! Please noitce that.
+    And on account free can create maxium 3 dns.
   """
+  # Current time
+  current_time = datetime.datetime.now()
 
   # Declare user login NoIp
   user = User()
@@ -24,7 +28,7 @@ class NoIP(Selenium, Field_NoIp):
 
   def login(self):
     try:
-      self.user.login_noip()
+      # self.user.login_noip() log information user
       self.get_url(self.url_login)
       self.input(self.xpath_username, self.username)
       self.input(self.xpath_password, self.password)
@@ -45,47 +49,101 @@ class NoIP(Selenium, Field_NoIp):
     list_host_name = []
     try:
       for i in range(1, self.total_host()):
-        text = self.get_text(self.hostname(i))
-        list_host_name.append(text)
+        warning = False
+        time_create = self.get_text(self.date_hostname(i)).split('\n', 1)
+        datetime_object = datetime.datetime.strptime(time_create[0], '%b %d, %Y') + datetime.timedelta(30)
+        time_left = datetime_object - self.current_time
+        if time_left.days <= 7:
+          warning = True
+        dns_hostname = {
+          'hostname': self.get_text(self.hostname(i)),
+          'date': time_create[0],
+          'ip_target': self.get_text(self.ip_targert_hostname(i)),
+          'time_left': f"{time_left.days} days left",
+          'warning': warning
+        }
+        list_host_name.append(dns_hostname)
       return list_host_name
+
     except:
       print("Can't catch list host name")
+      return list_host_name
 
   def check_exits_host(self, hostname):
-    # This version just support domain ddns.net
-    hostname = f"{hostname}.ddns.net"
-    return hostname in self.list_host_name()
+    for i in self.list_host_name():
+      if i['hostname'] == hostname:
+        return True
+    return
+
+  def index_hostname(self, hostname):
+    index = 1
+    for i in self.list_host_name():
+      if i['hostname'] == hostname:
+        break
+      index += 1
+    return index
 
   def create_new_hostname(self, hostname, ipv4):
-      if self.check_exits_host(hostname):
-        print("Can't create host name, {} is existed".format(hostname))
-        return False
-      # Wait button create
-      self.wait_loading_page(self.xpath_button_new_host).click()
+    hostname_dns = f"{hostname}.ddns.net"
+    if self.check_exits_host(hostname_dns):
+      print("Can't create host name, {} is exists".format(hostname))
+      return False
 
-      # Wait form create show
-      time.sleep(self.time_sleep)
-      self.input(self.xpath_input_hostname, hostname)
-      self.input(self.xpath_input_ipv4, ipv4)
-      self.button_click(self.xpath_button_create)
-      time.sleep(self.time_sleep)
-      return True
+    # Wait button create
+    self.wait_loading_page(self.xpath_button_new_host).click()
 
-  def delete_hostname(self, hostname):
+    # Wait form create show
+    time.sleep(self.time_sleep)
+    self.input(self.xpath_input_hostname, hostname)
+    self.input(self.xpath_input_ipv4, ipv4)
+    self.button_click(self.xpath_button_create)
+    time.sleep(self.time_sleep)
+    print(f"Create {hostname} complete!")
+    return True
+
+  def delete_hostname(self, hostname, index):
     # Check exist hostname
     if self.check_exits_host(hostname):
-      hostname = f"{hostname}.ddns.net"
-      index = self.list_host_name().index(hostname)+1
       self.element_click(self.button_delete_host(index))
       time.sleep(self.time_sleep)
       self.button_click(self.xpath_button_comfirm_delete)
       print("Delete hostname: {} complete!".format(hostname))
       return True
-    print ("{}.ddns.net not existed can't delete please check again".format(hostname))
+    print ("{} doesn't exists for delete!".format(hostname))
     return False
 
-  def update_domain(self, hostname):
-    hostname = f"{hostname}.ddns.net"
-    index = self.list_host_name().index(hostname)+1
-    time = self.get_text(self.get_time_created(index))
-    print(time)
+  def update_domain_manual(self, hostname, ip):
+    """
+      Need provide ip manual
+      Update domain when ipv4 diffirent with server. And provide new lienses (30 days) again.
+      This action will force update hostname and no care of time left noip
+    """
+    hostname_dns = f"{hostname}.ddns.net"
+    if len(self.list_host_name()) == 0:
+      print(f"No have any hostname in list")
+      return False
+
+    if self.delete_hostname(hostname_dns, self.index_hostname(hostname_dns)) == False:
+      return
+
+    time.sleep(self.time_sleep)
+    self.create_new_hostname(hostname, ip)
+    print(f"Update {hostname} complete")
+
+  def update_domain_auto(self, hostname):
+    """
+      Don't need provide ip manual
+      Noice: If you use this function, the ip auto get from on local
+      Update domain when ipv4 diffirent with server. And provide new lienses (30 days) again.
+      This action will force update hostname and no care of time left noip
+    """
+    hostname_dns = f"{hostname}.ddns.net"
+    if len(self.list_host_name()) == 0:
+      print(f"No have any hostname in list")
+      return False
+
+    if self.delete_hostname(hostname_dns, self.index_hostname(hostname_dns)) == False:
+      return
+    time.sleep(self.time_sleep)
+    self.create_new_hostname(hostname, self.ip)
+    print(f"Update {hostname} complete")
