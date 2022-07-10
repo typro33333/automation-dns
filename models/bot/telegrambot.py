@@ -22,6 +22,9 @@ class TelegramBot():
   def __init__(self, key):
     self.updater = Updater(key, use_context=True)
 
+  def job(self):
+    return self.updater.job_queue
+
   def command_handler(self, name, function):
     """
       - name: auto add '/' at fisrt ex: info => /info.

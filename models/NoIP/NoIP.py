@@ -73,7 +73,7 @@ class NoIP(Selenium, Field_NoIp):
     for i in self.list_host_name():
       if i['hostname'] == hostname:
         return True
-    return
+    return False
 
   def index_hostname(self, hostname):
     index = 1
@@ -93,11 +93,11 @@ class NoIP(Selenium, Field_NoIp):
     self.wait_loading_page(self.xpath_button_new_host).click()
 
     # Wait form create show
-    time.sleep(self.time_sleep)
+    time.sleep(self.time_deplay)
     self.input(self.xpath_input_hostname, hostname)
     self.input(self.xpath_input_ipv4, ipv4)
     self.button_click(self.xpath_button_create)
-    time.sleep(self.time_sleep)
+    time.sleep(self.time_deplay)
     print(f"Create {hostname} complete!")
     return True
 
@@ -105,7 +105,7 @@ class NoIP(Selenium, Field_NoIp):
     # Check exist hostname
     if self.check_exits_host(hostname):
       self.element_click(self.button_delete_host(index))
-      time.sleep(self.time_sleep)
+      time.sleep(self.time_deplay)
       self.button_click(self.xpath_button_comfirm_delete)
       print("Delete hostname: {} complete!".format(hostname))
       return True
@@ -119,31 +119,28 @@ class NoIP(Selenium, Field_NoIp):
       This action will force update hostname and no care of time left noip
     """
     hostname_dns = f"{hostname}.ddns.net"
-    if len(self.list_host_name()) == 0:
-      print(f"No have any hostname in list")
-      return False
 
     if self.delete_hostname(hostname_dns, self.index_hostname(hostname_dns)) == False:
-      return
+      return False
 
-    time.sleep(self.time_sleep)
+    time.sleep(self.time_deplay)
     self.create_new_hostname(hostname, ip)
     print(f"Update {hostname} complete")
+    return True
 
   def update_domain_auto(self, hostname):
     """
-      Don't need provide ip manual
+      Don't need provide ip manual, ip will set by ip public.
       Noice: If you use this function, the ip auto get from on local
       Update domain when ipv4 diffirent with server. And provide new lienses (30 days) again.
       This action will force update hostname and no care of time left noip
     """
     hostname_dns = f"{hostname}.ddns.net"
-    if len(self.list_host_name()) == 0:
-      print(f"No have any hostname in list")
-      return False
 
     if self.delete_hostname(hostname_dns, self.index_hostname(hostname_dns)) == False:
-      return
-    time.sleep(self.time_sleep)
+      return False
+
+    time.sleep(self.time_deplay)
     self.create_new_hostname(hostname, self.ip)
     print(f"Update {hostname} complete")
+    return True

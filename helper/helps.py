@@ -1,4 +1,5 @@
 import os
+import platform
 
 # Get current project
 def getPwd(file_name=None):
@@ -22,3 +23,16 @@ def getDirCurrent(dir_name, file_name=None):
 
 def loadVaribleEnv(name):
   return os.getenv(name)
+
+def loaddriver():
+
+  os = platform.system()
+
+  if os == 'Darwin':
+    return 'chromedriver_macos_m1'
+
+  elif os == 'Windows':
+    return 'chromedriver'
+
+  elif os == 'Linux':
+    return 'chromedriver_linux'
