@@ -1,20 +1,15 @@
-FROM python:3.9
+FROM --platform=linux/amd64 typro333/ubuntu-chromium-driver
 
 WORKDIR /app
 
+USER root
+
 COPY . .
 
-RUN apt-get update
-RUN apt-get upgrade -y
+RUN python3 -m venv env
+RUN /bin/bash -c "source env/bin/activate"
 
-# install manually all the missing libraries
-RUN apt-get install -y gconf-service libasound2 libatk1.0-0 libcairo2 libcups2 libfontconfig1 libgdk-pixbuf2.0-0 libgtk-3-0 libnspr4 libpango-1.0-0 libxss1 fonts-liberation libnss3 lsb-release xdg-utils
+RUN pip3 install --upgrade pip setuptools
+RUN pip3 install -r /app/requirements.txt
 
-# install chrome
-RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-RUN dpkg -i google-chrome-stable_current_amd64.deb; apt-get -fy install
-
-RUN pip install --upgrade pip setuptools
-RUN pip install -r requirements.txt
-
-CMD ["python", "main.py"]
+# CMD ["python3", "main.py"]
