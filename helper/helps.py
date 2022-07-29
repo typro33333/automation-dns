@@ -32,7 +32,7 @@ def loaddriver():
     return 'chromedriver_macos_m1'
 
   elif os == 'Windows':
-    return 'chromedriver'
+    return 'chromedriver.exe'
 
   elif os == 'Linux':
     return 'chromedriver_linux'

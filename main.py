@@ -1,8 +1,8 @@
-import uvicorn
+# import uvicorn
 
-from threading import Thread
-from fastapi import FastAPI
-from runbot.run import start_bot_telegram
+# from threading import Thread
+# from fastapi import FastAPI
+from run_bot_telegram.run import start_bot_telegram
 import sys, os
 
 # Routes
@@ -12,6 +12,7 @@ import sys, os
 if __name__ == '__main__':
   try:
     start_bot_telegram()
+    print('Server is running!')
   except KeyboardInterrupt:
     print('Interrupted')
     try:

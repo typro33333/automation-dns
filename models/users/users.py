@@ -1,4 +1,4 @@
-from contants import USERNAME_NOIP, PASSWORD_NOIP
+from contants.contants import USERNAME_NOIP, PASSWORD_NOIP
 
 # Class User
 class User():

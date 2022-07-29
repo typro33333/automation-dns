@@ -5,7 +5,7 @@ from telegram.ext.commandhandler import CommandHandler
 from telegram.ext.messagehandler import MessageHandler
 from telegram.ext.filters import Filters
 
-from contants import BOT_TELEGRAM_API_KEY
+from contants.contants import BOT_TELEGRAM_API_KEY
 
 class TelegramBot():
   """

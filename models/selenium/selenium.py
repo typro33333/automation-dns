@@ -9,7 +9,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from contants import TIME_DELAY, TIME_OUT
+from contants.contants import TIME_DELAY, TIME_OUT
 
 class Selenium():
   """
@@ -27,14 +27,14 @@ class Selenium():
   # Option webdriver
   options = Options()
   options.add_argument("--disable-extensions")
-  options.add_argument("--no-sandbox")
-  options.add_argument('--headless')
-  options.add_argument("start-maximized")
-  options.add_argument('--disable-gpu')
-  options.add_argument('--window-size=1920,1080')
-  options.add_argument('--ignore-certificate-errors')
-  options.add_argument("--disable-dev-shm-usage")
-  options.add_argument('--allow-running-insecure-content')
+  # options.add_argument("--no-sandbox")
+  # options.add_argument('--headless') # Run without GUI
+  # options.add_argument("start-maximized")
+  # options.add_argument('--disable-gpu')
+  # options.add_argument('--window-size=1920,1080')
+  # options.add_argument('--ignore-certificate-errors')
+  # options.add_argument("--disable-dev-shm-usage")
+  # options.add_argument('--allow-running-insecure-content')
   # options.add_experimental_option('detach', True)
   options.add_experimental_option("detach", False)
 
@@ -42,7 +42,7 @@ class Selenium():
   # service = ChromeService(executable_path=ChromeDriverManager().install())
   # driver = webdriver.Chrome(service=service)
 
-  driver = webdriver.Chrome(executable_path=f"{getPwd()}/driver/{loaddriver()}" , options=options)
+  driver = webdriver.Chrome(executable_path=f"{getPwd()}/drivers/{loaddriver()}" , options=options)
 
   # Time delay and timeout
   time_out = int(TIME_OUT)
