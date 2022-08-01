@@ -5,7 +5,7 @@ WORKDIR /app
 COPY . .
 
 RUN python3 -m venv env
-RUN source env/bin/activate
+RUN . env/bin/activate
 
 RUN pip install --upgrade pip setuptools
 RUN pip install -r /app/requirements.txt

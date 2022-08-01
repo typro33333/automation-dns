@@ -29,7 +29,7 @@ def loaddriver():
   os = platform.system()
 
   if os == 'Darwin':
-    return 'chromedriver_macos_m1'
+    return 'chromedriver_macos_intel'
 
   elif os == 'Windows':
     return 'chromedriver.exe'
