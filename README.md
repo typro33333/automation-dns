@@ -1,13 +1,12 @@
 ## Suport automation lience dns NoIp and MatBao
 
-cd /tmp
-wget https://github.com/mozilla/geckodriver/releases/download/v0.25.0/geckodriver-v0.25.0-macos.tar.gz
+python3 -m venv env
+source env/bin/activate
 
-tar xzf geckodriver-v0.25.0-macos.tar.gz
+pip install -r requirements.txt
 
-chmod +x geckodriver
+python3 main.py
 
-
-from selenium import webdriver
-driver = webdriver.Firefox(executable_path='/tmp/geckodriver')
-driver.get('http://example.com')
+1. Build
+- Build chromedriver [/builds/ubuntu-chromedriver/Dockerfile]
+- Build app with chromedriverc [/Dockerfile]

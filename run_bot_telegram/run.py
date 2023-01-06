@@ -7,7 +7,7 @@ from models.NoIP.NoIP import NoIP
 
 from models.bot.telegrambot import TelegramBot
 
-from .handler.commands import start, current_ip, help, sumnoip, newhostmanual, deletehost, update_manual, update_auto, summatbao, what_warning, newhostauto
+from .handler.commands import start, current_ip, help, sumnoip, newhostmanual, deletehost, update_manual, update_auto, summatbao, newhostauto
 from .handler.messages import not_found_command, unknown_text
 
 from contants.contants import BOT_TELEGRAM_API_KEY, MAIN_DOMAIN_NOIP
@@ -29,9 +29,6 @@ def get_commands():
   bot.add_handler(CommandHandler('deletehost', deletehost))
   bot.add_handler(CommandHandler('updm', update_manual))
   bot.add_handler(CommandHandler('upda', update_auto))
-
-  # Command support detail command
-  bot.add_handler(CommandHandler('what_warning', what_warning))
 
 # Job repeating
 # job_second = job_queue.run_repeating(detective_dirrent_ip, interval=60, first=5)

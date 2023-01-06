@@ -1,3 +1,0 @@
-services:
-  auto-dns:
-    image: typro333/

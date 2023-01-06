@@ -1,6 +1,6 @@
 from telegram.update import Update
 from telegram.ext.callbackcontext import CallbackContext
-
+import requests
 from models.NoIP.NoIP import NoIP
 from models.ip import Ip
 
@@ -235,11 +235,6 @@ def update_auto(update: Update, context: CallbackContext):
 #     context.bot.send_message(chat_id=context.job.context, text='A single message with 5s delay')
 
 #   context.bot.send_message(text='A single message with 5s delay')
-
-def what_warning(update: Update, context: CallbackContext):
-  update.message.reply_text(
-    "Explain: any hostname will one warning and if it equal [True] that mean NoIp can't access that ip you've provided for NoIp"
-  )
 
 def help(update: Update, context: CallbackContext):
   update.message.reply_text("--- List command ---:\n\
